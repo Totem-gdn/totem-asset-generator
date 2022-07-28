@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: asset-generator
+  name: asset-generator
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: asset-generator
+  template:
+    metadata:
+      labels:
+        app: asset-generator
+    spec:
+      containers:
+        - env:
+            - name: GRPC_HOST
+              value: 0.0.0.0
+            - name: GRPC_PORT
+              value: "50051"
+            - name: MONGODB_DATABASE
+              value: assets
+          envFrom:
+            - secretRef:
+                name: asset-generator
+          image: 667950714614.dkr.ecr.us-east-1.amazonaws.com/asset-generator:latest
+          imagePullPolicy: IfNotPresent
+          livenessProbe:
+            failureThreshold: 3
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            successThreshold: 1
+            tcpSocket:
+              port: 50051
+            timeoutSeconds: 1
+          name: asset-generator
+          ports:
+            - containerPort: 50051
+              name: grpc
+              protocol: TCP
