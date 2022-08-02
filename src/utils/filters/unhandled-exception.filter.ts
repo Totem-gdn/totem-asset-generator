@@ -1,15 +1,19 @@
-import { ArgumentsHost, Catch, HttpException, HttpStatus, RpcExceptionFilter } from '@nestjs/common';
+import { ArgumentsHost, Catch, HttpException, HttpStatus, Logger, RpcExceptionFilter } from '@nestjs/common';
 import { RpcException } from '@nestjs/microservices';
 import { Observable, throwError } from 'rxjs';
 import { RpcError } from '../errors/interfaces/rpc-error.interface';
 
 @Catch()
 export class UnhandledExceptionFilter implements RpcExceptionFilter {
+  private readonly logger = new Logger(UnhandledExceptionFilter.name);
+
   catch(exception: any, _host: ArgumentsHost): Observable<RpcException> {
     if (exception instanceof RpcException) {
+      this.logger.error(`${RpcException.name}: ${JSON.stringify(exception)}`);
       return throwError(() => exception);
     }
     if (exception instanceof HttpException) {
+      this.logger.error(`${HttpException.name}: ${JSON.stringify(exception)}`);
       return throwError(
         () =>
           new RpcException(
@@ -23,6 +27,7 @@ export class UnhandledExceptionFilter implements RpcExceptionFilter {
       );
     }
     if (exception instanceof Error) {
+      this.logger.error(`${Error.name}: ${JSON.stringify(exception)}`);
       return throwError(
         () =>
           new RpcException(

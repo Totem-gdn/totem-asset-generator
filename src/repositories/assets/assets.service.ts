@@ -10,16 +10,16 @@ import { spears, swords } from './entities/__mocks__/items';
 import { AssetType } from './enums/asset-type.enum';
 
 @Injectable()
-export class MinterService {
+export class AssetsService {
   private readonly assetGenerators: { [type: string]: IterableIterator<AvatarEntity | ItemEntity> } = {};
 
   constructor(
     @InjectModel(Avatar.name) private readonly avatarModel: Model<AvatarDocument>,
     @InjectModel(Item.name) private readonly itemModel: Model<ItemDocument>,
   ) {
-    this.assetGenerators[AssetType.Avatar] = MinterService.assetGenerator<AvatarEntity>(avatars);
-    this.assetGenerators[AssetType.Spear] = MinterService.assetGenerator<ItemEntity>(spears);
-    this.assetGenerators[AssetType.Sword] = MinterService.assetGenerator<ItemEntity>(swords);
+    this.assetGenerators[AssetType.Avatar] = AssetsService.assetGenerator<AvatarEntity>(avatars);
+    this.assetGenerators[AssetType.Spear] = AssetsService.assetGenerator<ItemEntity>(spears);
+    this.assetGenerators[AssetType.Sword] = AssetsService.assetGenerator<ItemEntity>(swords);
   }
 
   private static *assetGenerator<T>(collection: T[]): IterableIterator<T> {

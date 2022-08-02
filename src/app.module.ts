@@ -3,8 +3,9 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import appConfig from './configuration/app/app.config';
 import mongoDbConfig, { IMongoDbConfig, MONGODB_NAMESPACE } from './configuration/mongodb/mongodb.config';
 import { MongooseModule, MongooseModuleOptions } from '@nestjs/mongoose';
-import { HealthModule } from './api/health/health.module';
-import { AssetsModule } from './api/assets/assets.module';
+import { HealthModule } from './controllers/health/health.module';
+import { AssetsModule } from './controllers/assets/assets.module';
+import { PaymentsModule } from './controllers/payments/payments.module';
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { AssetsModule } from './api/assets/assets.module';
     }),
     HealthModule,
     AssetsModule,
+    PaymentsModule,
   ],
 })
 export class AppModule {}

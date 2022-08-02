@@ -1,5 +1,5 @@
 import { IsIn, IsNotEmpty, IsString } from 'class-validator';
-import { AssetType } from '../../../minter/enums/asset-type.enum';
+import { AssetType } from '../../repositories/assets/enums/asset-type.enum';
 
 export class MintAssetRequestDTO {
   @IsString()

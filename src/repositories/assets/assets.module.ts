@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { MinterService } from './minter.service';
+import { AssetsService } from './assets.service';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Avatar, AvatarSchema } from './schemas/avatar.schema';
 import { Item, ItemSchema } from './schemas/item.schema';
@@ -11,7 +11,7 @@ import { Item, ItemSchema } from './schemas/item.schema';
       { name: Item.name, schema: ItemSchema },
     ]),
   ],
-  providers: [MinterService],
-  exports: [MinterService],
+  providers: [AssetsService],
+  exports: [AssetsService],
 })
-export class MinterModule {}
+export class AssetsModule {}

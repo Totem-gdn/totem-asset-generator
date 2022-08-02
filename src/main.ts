@@ -12,11 +12,12 @@ async function bootstrap() {
   await app.connectMicroservice<MicroserviceOptions>({
     transport: Transport.GRPC,
     options: {
-      package: ['grpc.health.v1', 'assets'],
+      package: ['grpc.health.v1', 'assets', 'payments'],
       url: `${host}:${port}`,
       protoPath: [
-        join(__dirname, 'api', 'health', 'proto', 'health.proto'),
-        join(__dirname, 'api', 'assets', 'proto', 'assets.proto'),
+        join(__dirname, 'controllers', 'health', 'proto', 'health.proto'),
+        join(__dirname, 'controllers', 'assets', 'proto', 'assets.proto'),
+        join(__dirname, 'controllers', 'payments', 'proto', 'payments.proto'),
       ],
     },
   } as GrpcOptions);
