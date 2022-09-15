@@ -8,6 +8,8 @@ import { ItemEntity } from './entities/item.entity';
 import { avatars } from './entities/__mocks__/avatars';
 import { spears, swords } from './entities/__mocks__/items';
 import { AssetType } from './enums/asset-type.enum';
+import { ColorUtils } from './lib/color-utils';
+import { IAvatar } from './interfaces/avatar.interface';
 
 @Injectable()
 export class AssetsService {
@@ -17,9 +19,17 @@ export class AssetsService {
     @InjectModel(Avatar.name) private readonly avatarModel: Model<AvatarDocument>,
     @InjectModel(Item.name) private readonly itemModel: Model<ItemDocument>,
   ) {
-    this.assetGenerators[AssetType.Avatar] = AssetsService.assetGenerator<AvatarEntity>(avatars);
+    this.assetGenerators[AssetType.Avatar] = AssetsService.avatarGenerator(avatars);
     this.assetGenerators[AssetType.Spear] = AssetsService.assetGenerator<ItemEntity>(spears);
     this.assetGenerators[AssetType.Sword] = AssetsService.assetGenerator<ItemEntity>(swords);
+  }
+
+  private static *avatarGenerator(collection: Array<Partial<IAvatar>>): IterableIterator<AvatarEntity> {
+    while (true) {
+      for (const idx in collection) {
+        yield new AvatarEntity({ ...collection[idx], clothingColor: ColorUtils.randomHex() } as IAvatar);
+      }
+    }
   }
 
   private static *assetGenerator<T>(collection: T[]): IterableIterator<T> {
